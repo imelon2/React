@@ -1,10 +1,71 @@
-import React from 'react';
 import './app.css';
-import Habit from './components/habit';
+import Habits from './components/habits';
+import React, { Component } from 'react';
+import Navbar from './components/Navbar';
+import InputAdd from './components/InputAdd';
 
-function App() {
-  const name ='steve'
-  return <Habit></Habit>
+class App extends Component {
+  state ={
+    habits:[
+        {id : 1, name: 'Reading',count:0},
+        {id : 2, name: 'Running',count:0},
+        {id : 3, name: 'Coding',count:0},
+    ]
+
+};
+
+handleIncrement = habit => {
+  const habits = [...this.state.habits]
+  const index = habits.indexOf(habit);
+  habits[index].count ++;
+  this.setState({habits: habits})
+} 
+handleDecrement = (habit) => {
+  const habits = [...this.state.habits];
+  const index = habits.indexOf(habit);
+  const count = habits[index].count -1;
+  habits[index].count = count > 0 ? count : 0;
+  this.setState({habits: habits})
+} 
+handleDelete = (habit) => {
+  // const habits = [...this.state.habits];
+  // const index = habits.indexOf(habit);
+  // habits[index].count = 0;
+  // this.setState({habits: habits})
+  const habits = this.state.habits.filter(item => item.id !== habit.id );
+  this.setState({habits: habits})
+}
+
+handelAdd = name => {
+  const habits = [...this.state.habits, {id: Date.now(), name:name, count: 0}];
+  this.setState({habits: habits});
+}
+
+ResetAll = () => {
+  const habits = this.state.habits.map(habit=> {
+    habit.count = 0;
+    return habit;
+  })
+  this.setState({habits : habits});
+}
+
+  render() {
+    const totalCount = this.state.habits.filter(item => item.count > 0).length;
+    return (
+      <>
+      <Navbar totalCount = {totalCount}
+      />
+      <Habits 
+      habits={this.state.habits}
+      onIncrement={this.handleIncrement}
+      onDecrement={this.handleDecrement}
+      onDelete={this.handleDelete}
+      onAdd={this.handelAdd}
+      ResetAll={this.ResetAll}
+      />
+      </>
+    );
+  }
 }
 
 export default App;
