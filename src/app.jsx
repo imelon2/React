@@ -3,6 +3,7 @@ import Habits from './components/habits';
 import React, { Component } from 'react';
 import Navbar from './components/Navbar';
 import InputAdd from './components/InputAdd';
+import SimpleHabit from './components/simpleHabit';
 
 class App extends Component {
   state ={
@@ -15,9 +16,13 @@ class App extends Component {
 };
 
 handleIncrement = habit => {
-  const habits = [...this.state.habits]
-  const index = habits.indexOf(habit);
-  habits[index].count ++;
+  const habits = this.state.habits.map( item => {
+    if(item.id === habit.id) {
+      return {...habit,count:habit.count +1 }
+    } else {
+      return item
+    }
+  })
   this.setState({habits: habits})
 } 
 handleDecrement = (habit) => {
@@ -43,7 +48,9 @@ handelAdd = name => {
 
 ResetAll = () => {
   const habits = this.state.habits.map(habit=> {
-    habit.count = 0;
+    if(habit.count !== 0 ) {
+      return {...habit, count: 0}
+    }
     return habit;
   })
   this.setState({habits : habits});
@@ -63,6 +70,8 @@ ResetAll = () => {
       onAdd={this.handelAdd}
       ResetAll={this.ResetAll}
       />
+
+      <SimpleHabit/>
       </>
     );
   }

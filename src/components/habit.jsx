@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 
 class Habit extends Component {
 
-    
+    componentDidMount() {
+        console.log("mount");
+    }
+
+    componentWillUnmount() {
+        console.log("Unmount");
+    }
+
     handleIncrement = () => {
         this.props.onIncrement(this.props.habit);
     } 
@@ -16,7 +23,8 @@ class Habit extends Component {
         // const a = this.props.habit.name;
         // const b = this.props.habit.count;
         // console.log(a,b);
-        const { name,count } = this.props.habit;
+        const { name } = this.props.habit;
+        const {count } = this.props;
         return (
             <li className="habit">
 
